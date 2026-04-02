@@ -66,6 +66,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.hv_param import HVParamBrownForsythe
 
 def calculate_bf_test_variance_homogeneity(data_list: List[List[float]]) -> Dict[str, Any]:
     """
@@ -233,7 +234,7 @@ def _get_homogeneity_assessment(p_value: float) -> str:
         return "方差齐性（不拒绝方差齐性假设）"
 
 
-def cal_result_hv_bf(data_list: List[List[float]]) -> Dict[str, Any]:
+def cal_result_hv_bf(param: HVParamBrownForsythe) -> Dict[str, Any]:
     """
     生成Brown-Forsythe方差齐性检验统计分析的完整报告字典
     
@@ -253,6 +254,9 @@ def cal_result_hv_bf(data_list: List[List[float]]) -> Dict[str, Any]:
             - interpretation: 统计解释
     """
     # 执行Brown-Forsythe检验
+    # 从参数对象解构
+    data_list = [item.data_list for item in param.stats_data_list]
+
     results = calculate_bf_test_variance_homogeneity(data_list)
     
     # 构建结果字典

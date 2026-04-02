@@ -209,7 +209,7 @@ def _get_homogeneity_assessment(p_value: float) -> str:
         return "方差齐性（不拒绝方差齐性假设）"
 
 
-def cal_result_hv_hartley(data_list: List[List[float]]) -> Dict[str, Any]:
+def cal_result_hv_hartley(param: HVParamHartley) -> Dict[str, Any]:
     """
     生成Hartley方差齐性检验统计分析的完整报告字典
     
@@ -229,6 +229,9 @@ def cal_result_hv_hartley(data_list: List[List[float]]) -> Dict[str, Any]:
             - interpretation: 统计解释
     """
     # 执行Hartley检验
+    # 从参数对象解构
+    data_list = [item.data_list for item in param.stats_data_list]
+
     results = calculate_hartley_test_variance_homogeneity(data_list)
     
     # 构建结果字典

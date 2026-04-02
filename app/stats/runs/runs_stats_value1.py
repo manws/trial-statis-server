@@ -67,6 +67,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from typing import List, Tuple, Dict, Any
 from scipy import stats
+from app.schemas.request_data.runs_param import RunsParamValue1
 
 
 def convert_to_binary_by_mean(data: List[float]) -> List[int]:
@@ -230,7 +231,7 @@ def calculate_runs_test_value_by_mean(data: List[float]) -> Dict:
     }
 
 
-def cal_result_runs_value1(data: List[float]) -> Dict[str, Any]:
+def cal_result_runs_value1(param: RunsParamValue1) -> Dict[str, Any]:
     """
     生成按平均数分类的数值变量游程检验分析的完整报告字典
     
@@ -276,6 +277,9 @@ def cal_result_runs_value1(data: List[float]) -> Dict[str, Any]:
             - remark: 备注信息，包含样本量
     """
     # 执行按平均数分类的游程检验
+    # 从参数对象解构
+    data = param.stats_data_list[0].data_list
+
     results = calculate_runs_test_value_by_mean(data)
     
     # 构建结果字典

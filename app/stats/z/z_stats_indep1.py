@@ -64,6 +64,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, Any
 from scipy.stats import norm
+from app.schemas.request_data.z_param import ZParamIndep1
 
 
 def independent_sample_z_test(n1: int, mean1: float, std1: float, n2: int, mean2: float, std2: float) -> Dict[str, Any]:
@@ -187,85 +188,23 @@ def perform_independent_sample_z_test(n1: int, mean1: float, std1: float, n2: in
     return results
 
 
-def cal_result_z_indep1(n1: int, mean1: float, std1: float, n2: int, mean2: float, std2: float) -> Dict[str, Any]:
+def cal_result_z_indep1(param: ZParamIndep1) -> Dict[str, Any]:
     """
     生成独立样本Z检验分析的完整报告字典
     
-    此函数整合了独立样本Z检验的所有关键指标，生成标准化的字典格式报告，
-    适用于临床研究报告的需求，提供全面的Z检验结果。报告包括输入参数、
-    检验统计量和统计解释等信息，便于临床医生和研究人员快速理解Z检验的特征。
-    
-    【函数定位】:
-    本函数是独立样本Z检验的主入口函数，提供一站式的数据分析和结果输出。
-    与底层的 independent_sample_z_test 相比，本函数增加了备注信息和更完整的
-    结果结构，更适合直接用于报告生成和数据展示。
-    
-    【输出数据结构说明】:
-    返回的字典包含以下核心部分：
-    1. table_name: 报告名称，标识分析类型
-    2. input_parameters: 原始输入数据，便于追溯和验证
-    3. test_statistics: 核心统计量，包括标准误、Z值和P值
-    4. significance_tests: 显著性判断结果，提供布尔值和文字描述
-    5. interpretation: 专业统计解释，可直接用于报告撰写
-    6. remark: 简要的分组信息摘要
-    
-    【临床应用示例】:
-    示例1：比较两种降压药的疗效
-        - 组1：新药组，n=50，收缩压均数下降15.2mmHg，标准差3.8
-        - 组2：对照组，n=48，收缩压均数下降10.5mmHg，标准差4.2
-        - 调用本函数可获得完整的统计推断结果
-    
-    示例2：比较男女血脂水平
-        - 组1：男性，n=120，总胆固醇均数5.2mmol/L，标准差1.1
-        - 组2：女性，n=115，总胆固醇均数4.9mmol/L，标准差1.0
-        - 通过本函数判断性别间是否存在显著差异
-    
-    【结果解读指导】:
-    - 当 p_value_two_sided < 0.05 时，认为两组均数差异有统计学意义
-    - Z值的绝对值越大，表示两组差异越明显
-    - standard_error 反映了两组均数差值的抽样误差大小
-    - 需结合临床实际判断统计显著性是否具有临床意义
-    
-    【与其他函数的关系】:
-    - independent_sample_z_test: 核心计算函数，被本函数调用
-    - perform_independent_sample_z_test: 中间层函数，提供参数验证
-    - 本函数在前两者基础上增加了报告格式化功能
-    
     Args:
-        n1: 第一组样本量，整数类型，必须>0
-        mean1: 第一组样本均数，浮点数类型
-        std1: 第一组样本标准差，浮点数类型，必须>0
-        n2: 第二组样本量，整数类型，必须>0
-        mean2: 第二组样本均数，浮点数类型
-        std2: 第二组样本标准差，浮点数类型，必须>0
+        param: ZParamIndep1对象，包含n1, mean1, std1, n2, mean2, std2
     
     Returns:
-        Dict[str, Any]: 包含Z检验分析指标的字典，键为指标名称，值为对应的统计量
-            - table_name: 报告表格名称，固定为"独立样本Z检验分析"
-            - input_parameters: 输入参数信息
-                - group1_n: 第一组样本量，整数类型
-                - group1_mean: 第一组样本均数，浮点数类型
-                - group1_std: 第一组样本标准差，浮点数类型
-                - group2_n: 第二组样本量，整数类型
-                - group2_mean: 第二组样本均数，浮点数类型
-                - group2_std: 第二组样本标准差，浮点数类型
-            - test_statistics: 检验统计量
-                - standard_error: 标准误，浮点数类型，表示两组均数差的标准误
-                - z_value: Z值，浮点数类型，标准化后的检验统计量
-                - p_value_two_sided: 双侧P值，浮点数类型，双侧检验的显著性概率
-            - significance_tests: 显著性检验结果
-                - p_greater_than_0_05: P值是否大于0.05，布尔类型
-                - p_greater_than_0_01: P值是否大于0.01，布尔类型
-                - significant_at_05: 0.05水平显著性，字符串类型（"显著"或"不显著"）
-                - significant_at_01: 0.01水平显著性，字符串类型（"显著"或"不显著"）
-            - interpretation: 统计解释
-                - z_test_interpretation: Z检验解释，字符串类型，0.05水平的结论
-                - z_test_interpretation_01: 0.01水平解释，字符串类型，0.01水平的结论
-            - remark: 备注信息，字符串类型，包含两组基本信息的摘要
-    
-    Raises:
-        ValueError: 当样本量≤0或标准差≤0时抛出异常
+        Dict[str, Any]: 包含Z检验分析指标的字典
     """
+    n1 = param.n1
+    mean1 = param.mean1
+    std1 = param.std1
+    n2 = param.n2
+    mean2 = param.mean2
+    std2 = param.std2
+
     # 执行独立样本Z检验
     results = perform_independent_sample_z_test(n1, mean1, std1, n2, mean2, std2)
     

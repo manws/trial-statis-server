@@ -226,6 +226,10 @@ def cal_result_t_p(t_value: float, df: int) -> Dict[str, Any]:
                 - two_sided_interpretation_01: 0.01水平解释，字符串类型
             - remark: 备注信息，字符串类型
     """
+    # 从参数对象解构
+    t_value = param.t_value
+    df = param.df
+
     # 执行P值计算
     results = perform_t_p_calculation(t_value, df)
     

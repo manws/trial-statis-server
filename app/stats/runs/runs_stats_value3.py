@@ -68,6 +68,7 @@ import math
 from typing import Dict, List, Any, Tuple
 from scipy import stats
 import numpy as np
+from app.schemas.request_data.runs_param import RunsParamValue3
 
 
 def convert_to_binary_by_given_value(data: List[float], threshold: float) -> List[int]:
@@ -240,7 +241,7 @@ def calculate_runs_test_value_by_given_value(data: List[float], threshold: float
     }
 
 
-def cal_result_runs_value3(data: List[float], threshold: float) -> Dict[str, Any]:
+def cal_result_runs_value3(param: RunsParamValue3) -> Dict[str, Any]:
     """
     生成按给定值分类的数值变量游程检验分析的完整报告字典
     
@@ -288,6 +289,10 @@ def cal_result_runs_value3(data: List[float], threshold: float) -> Dict[str, Any
             - remark: 备注信息（样本量和分类阈值），字符串类型
     """
     # 执行按给定值分类的游程检验
+    # 从参数对象解构
+    data = param.stats_data_list[0].data_list
+    threshold = param.value
+
     results = calculate_runs_test_value_by_given_value(data, threshold)
     
     # 构建结果字典

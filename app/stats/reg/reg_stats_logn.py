@@ -69,6 +69,7 @@ import numpy as np
 from scipy import stats
 from scipy.optimize import minimize
 from typing import Dict, List, Any
+from app.schemas.request_data.reg_param import RegParamLogN
 
 
 def calculate_multinomial_logistic_regression(x_data_list: List[List[float]], y_data: List[float]) -> Dict:
@@ -359,7 +360,7 @@ def _compute_confusion_matrix(true_labels, predicted_classes, categories):
     return confusion_matrix.tolist()
 
 
-def cal_result_reg_logn(x_data_list: List[List[float]], y_data: List[float]) -> Dict[str, Any]:
+def cal_result_reg_logn(param: RegParamLogN) -> Dict[str, Any]:
     """
     生成多项逻辑回归分析的完整报告字典
     
@@ -382,6 +383,11 @@ def cal_result_reg_logn(x_data_list: List[List[float]], y_data: List[float]) -> 
             - interpretation: 统计解释
     """
     # 执行多项逻辑回归分析
+    # 从参数对象解构: 最后一个是 y_data，其余是 x_data_list
+    all_data = [item.data_list for item in param.stats_data_list]
+    x_data_list = all_data[:-1]
+    y_data = all_data[-1]
+
     results = calculate_multinomial_logistic_regression(x_data_list, y_data)
     
     # 构建结果字典

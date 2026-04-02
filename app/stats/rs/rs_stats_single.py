@@ -66,6 +66,7 @@ import math
 from typing import Dict, List, Tuple
 from scipy.stats import norm, rankdata
 import numpy as np
+from app.schemas.request_data.rs_param import RSParamSingle
 
 
 def wilcoxon_signed_rank_single_sample_test(sample_data: List[float], hypothesized_median: float = 0.0) -> Dict:
@@ -183,7 +184,7 @@ def wilcoxon_signed_rank_single_sample_test(sample_data: List[float], hypothesiz
     }
 
 
-def cal_result_rs_single(sample_data: List[float], hypothesized_median: float = 0.0) -> Dict:
+def cal_result_rs_single(param: RSParamSingle) -> Dict:
     """
     生成单样本Wilcoxon符号秩检验统计分析的完整报告字典
     
@@ -206,6 +207,10 @@ def cal_result_rs_single(sample_data: List[float], hypothesized_median: float = 
             - interpretation: 统计解释
     """
     # 执行单样本Wilcoxon符号秩检验
+    # 从参数对象解构
+    sample_data = param.stats_data_list[0].data_list
+    hypothesized_median = param.mean
+
     results = wilcoxon_signed_rank_single_sample_test(sample_data, hypothesized_median)
     
     # 构建结果字典

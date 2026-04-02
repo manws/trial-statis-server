@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List, Tuple
 from scipy.stats import chi2, rankdata, norm
+from app.schemas.request_data.rs_param import RSParamKWH
 import numpy as np
 from itertools import combinations
 
@@ -315,7 +316,7 @@ def nemenyi_post_hoc_test(groups_data: List[List[float]], alpha: float = 0.05) -
     }
 
 
-def cal_result_rs_kwh(groups_data: List[List[float]]) -> Dict:
+def cal_result_rs_kwh(param: RSParamKWH) -> Dict:
     """
     生成Kruskal-Wallis H检验及Nemenyi事后检验统计分析的完整报告字典
     
@@ -337,6 +338,9 @@ def cal_result_rs_kwh(groups_data: List[List[float]]) -> Dict:
             - interpretation: 统计解释
             - nemenyi_results: Nemenyi事后检验结果（如果主检验显著）
     """
+    # 从参数对象解构
+    groups_data = [item.data_list for item in param.stats_data_list]
+
     # 执行Kruskal-Wallis H检验
     kw_results = kruskal_wallis_h_test_kwh(groups_data)
     

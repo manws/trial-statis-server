@@ -14,7 +14,7 @@ router = APIRouter(prefix="/cq", tags=["Stats-CQ"])
 @router.post("/q", response_model=ResultData)
 async def cq_q(param: CQParam):
     try:
-        report = cal_report_cq(param)
+        report = cal_result_cq(param)
         return _wrap(report, data=param.model_dump(), message="CQ检验成功")
     except Exception as e:
         LoggerHelper.error(f"cq_q failed: {e}")

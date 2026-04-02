@@ -69,6 +69,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.sur_param import SurParamLV
 
 
 def survival_rate_comparison_two_groups(stats_data_list: List[Dict[str, Any]]) -> Dict:
@@ -529,6 +530,9 @@ def cal_result_sur_lv(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
                 - sensitivity_interpretation: 敏感性解释，字符串类型
             - remark: 备注信息，字符串类型
     """
+    # 从参数对象解构
+    stats_data_list = [item.model_dump() for item in param.stats_data_list]
+
     # 执行两组生存率比较分析
     results = survival_rate_comparison_two_groups(stats_data_list)
     

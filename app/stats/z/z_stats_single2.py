@@ -66,6 +66,7 @@ import math
 from typing import Dict, List, Any
 from scipy.stats import norm
 import numpy as np
+from app.schemas.request_data.z_param import ZParamSingle2
 
 
 def single_sample_z_test_from_raw_data(pop_mean: float, pop_std: float, raw_data: List[float]) -> Dict:
@@ -259,89 +260,20 @@ def perform_single_sample_z_test_from_raw(pop_mean: float, pop_std: float, raw_d
     return results
 
 
-def cal_result_z_single2(pop_mean: float, pop_std: float, raw_data: List[float]) -> Dict[str, Any]:
+def cal_result_z_single2(param: ZParamSingle2) -> Dict[str, Any]:
     """
     生成基于原始数据的单样本Z检验分析的完整报告字典
     
-    此函数整合了基于原始数据的单样本Z检验的所有关键指标，生成标准化的字典格式报告，
-    适用于临床研究报告的需求，提供全面的Z检验结果。报告包括输入参数、
-    样本统计量、检验统计量和统计解释等信息，
-    便于临床医生和研究人员快速理解Z检验的特征。
-    
-    【函数特点】:
-    1. 统一的输出格式：返回结构化的字典，便于程序处理和展示
-    2. 完整的统计信息：包含从输入参数到结果解释的全部信息
-    3. 临床友好：提供易于理解的统计解释和备注信息
-    4. 标准化设计：符合医学研究报告的统计方法描述规范
-    
-    【返回字典结构详解】:
-    - table_name: 报告名称，标识此分析的类型
-    - input_parameters: 用户输入的参数，用于追溯分析条件
-    - sample_statistics: 描述性统计量，反映样本的基本特征
-    - test_statistics: 推断性统计量，用于假设检验
-    - significance_tests: 显著性判断，提供决策依据
-    - interpretation: 结果解释，用自然语言描述统计结论
-    - remark: 备注信息，总结关键参数
-    
-    【临床应用场景】:
-    1. 科研论文：提供完整的统计检验结果用于论文撰写
-    2. 临床报告：生成标准化的检验报告供临床医生参考
-    3. 质量控制：监控生产或检测过程是否符合标准
-    4. 教学演示：展示单样本Z检验的完整流程和结果
-    
-    【结果使用建议】:
-    1. 结合临床实际：统计显著性不等于临床重要性
-    2. 注意前提条件：确保数据满足Z检验的适用条件
-    3. 综合判断：结合其他统计方法和临床信息进行综合评估
-    4. 谨慎解释：避免过度解读统计结果
-    
     Args:
-        pop_mean (float): 总体均数，浮点数类型
-        pop_std (float): 总体标准差，浮点数类型
-        raw_data (List[float]): 原始数据列表，浮点数列表类型
+        param: ZParamSingle2对象，包含pop_mean, pop_std, stats_data_list
     
     Returns:
-        Dict[str, Any]: 包含Z检验分析指标的字典，键为指标名称，值为对应的统计量
-            - table_name: 报告表格名称，固定为"单样本Z检验分析（原始资料）"
-            - input_parameters: 输入参数信息
-                - population_mean: 总体均数，浮点数类型
-                - population_std: 总体标准差，浮点数类型
-                - sample_size: 样本量，整数类型
-            - sample_statistics: 样本统计量
-                - sample_mean: 样本均数，浮点数类型
-                - sample_std: 样本标准差，浮点数类型
-                - sample_min: 样本最小值，浮点数类型
-                - sample_max: 样本最大值，浮点数类型
-            - test_statistics: 检验统计量
-                - standard_error: 标准误，浮点数类型
-                - z_value: Z值，浮点数类型
-                - p_value_two_sided: 双侧P值，浮点数类型
-            - significance_tests: 显著性检验结果
-                - p_greater_than_0_05: P值是否大于0.05，布尔类型
-                - p_greater_than_0_01: P值是否大于0.01，布尔类型
-                - significant_at_05: 0.05水平显著性，字符串类型
-                - significant_at_01: 0.01水平显著性，字符串类型
-            - interpretation: 统计解释
-                - z_test_interpretation: Z检验解释，字符串类型
-                - z_test_interpretation_01: 0.01水平解释，字符串类型
-            - remark: 备注信息，字符串类型
-    
-    使用示例:
-        ```python
-        # 执行单样本Z检验并获取完整报告
-        result = cal_result_z_single2(
-            pop_mean=170.0,
-            pop_std=8.0,
-            raw_data=[172, 168, 175, 170, 169, 173, 171, 167, 174, 170]
-        )
-        
-        # 访问结果
-        print(f"分析类型：{result['table_name']}")
-        print(f"Z值：{result['test_statistics']['z_value']}")
-        print(f"P值：{result['test_statistics']['p_value_two_sided']}")
-        print(f"结论：{result['interpretation']['z_test_interpretation']}")
-        ```
+        Dict[str, Any]: 包含Z检验分析指标的字典
     """
+    pop_mean = param.pop_mean
+    pop_std = param.pop_std
+    raw_data = param.stats_data_list[0].data_list
+
     # 执行单样本Z检验
     results = perform_single_sample_z_test_from_raw(pop_mean, pop_std, raw_data)
     

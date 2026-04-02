@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List
 from scipy.stats import norm, rankdata
+from app.schemas.request_data.rs_param import RSParamPaired
 import numpy as np
 
 
@@ -215,7 +216,7 @@ def wilcoxon_signed_rank_test(data1: List[float], data2: List[float]) -> Dict:
     }
 
 
-def cal_result_rs_paired(data1: List[float], data2: List[float]) -> Dict:
+def cal_result_rs_paired(param: RSParamPaired) -> Dict:
     """
     生成Wilcoxon符号秩检验统计分析的完整报告字典
     
@@ -267,6 +268,10 @@ def cal_result_rs_paired(data1: List[float], data2: List[float]) -> Dict:
         ValueError: 当输入数据不符合检验要求时抛出异常
     """
     # 执行Wilcoxon符号秩检验
+    # 从参数对象解构
+    data1 = param.stats_data_list[0].data_list
+    data2 = param.stats_data_list[1].data_list
+
     results = wilcoxon_signed_rank_test(data1, data2)
     
     # 构建结果字典

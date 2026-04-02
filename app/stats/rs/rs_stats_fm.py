@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List
 from scipy.stats import chi2, rankdata, norm
+from app.schemas.request_data.rs_param import RSParamFM
 import numpy as np
 from itertools import combinations
 
@@ -278,7 +279,7 @@ def friedman_q_post_hoc_test(block_data: List[List[float]], alpha: float = 0.05)
     }
 
 
-def cal_result_rs_fm(block_data: List[List[float]]) -> Dict:
+def cal_result_rs_fm(param: RSParamFM) -> Dict:
     """
     生成Friedman M检验及Q检验统计分析的完整报告字典
     
@@ -300,6 +301,9 @@ def cal_result_rs_fm(block_data: List[List[float]]) -> Dict:
             - interpretation: 统计解释
             - q_results: Q事后检验结果（如果主检验显著）
     """
+    # 从参数对象解构
+    block_data = [item.data_list for item in param.stats_data_list]
+
     # 执行Friedman M检验
     fm_results = friedman_m_test(block_data)
     

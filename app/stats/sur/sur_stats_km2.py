@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 
 import numpy as np
 from typing import Dict, List, Any
+from app.schemas.request_data.sur_param import SurParamKM2
 
 
 def kaplan_meier_survival_summary_data(stats_data_list: List[Dict[str, Any]]) -> Dict:
@@ -339,7 +340,7 @@ def perform_kaplan_meier_survival_summary(stats_data_list: List[Dict[str, Any]])
     return results
 
 
-def cal_result_sur_km2(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
+def cal_result_sur_km2(param: SurParamKM2) -> Dict[str, Any]:
     """
     生成基于汇总数据的Kaplan-Meier生存分析的完整报告字典
     
@@ -379,6 +380,9 @@ def cal_result_sur_km2(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
             - remark: 备注信息，字符串类型
     """
     # 执行Kaplan-Meier生存分析
+    # 从参数对象解构
+    stats_data_list = [item.model_dump() for item in param.stats_data_list]
+
     results = perform_kaplan_meier_survival_summary(stats_data_list)
     
     # 构建结果字典

@@ -210,6 +210,9 @@ def cal_result_cq(data_matrix: List[List[int]]) -> Dict:
             - significance_tests: 显著性检验结果
             - interpretation: 统计解释
     """
+    # 从参数对象解构
+    data_matrix = [[int(x) for x in item.data_list] for item in param.stats_data_list]
+
     # 执行Cochran's Q检验
     results = cochran_q_test(data_matrix)
     

@@ -310,6 +310,12 @@ def cal_result_chi_paired(a: int, b: int, c: int, d: int) -> Dict[str, Any]:
             - odds_ratio: 优势比分析
             - interpretation: 统计解释
     """
+    # 从参数对象解构
+    a = param.a
+    b = param.b
+    c = param.c
+    d = param.d
+
     # 执行配对资料卡方检验
     results = perform_paired_chi_square_test(a, b, c, d)
     

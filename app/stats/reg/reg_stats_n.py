@@ -69,6 +69,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.reg_param import RegParamN
 
 
 def calculate_multiple_linear_regression(data_list: List[List[float]]) -> Dict:
@@ -248,7 +249,7 @@ def _generate_model_equation(coefficients_info: List[Dict]) -> str:
     return equation
 
 
-def cal_result_reg_n(data_list: List[List[float]]) -> Dict[str, Any]:
+def cal_result_reg_n(param: RegParamN) -> Dict[str, Any]:
     """
     生成多元线性回归分析的完整报告字典
     
@@ -269,6 +270,9 @@ def cal_result_reg_n(data_list: List[List[float]]) -> Dict[str, Any]:
             - interpretation: 统计解释
     """
     # 执行多元线性回归分析
+    # 从参数对象解构
+    data_list = [item.data_list for item in param.stats_data_list]
+
     results = calculate_multiple_linear_regression(data_list)
     
     # 构建结果字典

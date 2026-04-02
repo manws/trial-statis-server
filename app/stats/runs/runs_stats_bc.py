@@ -187,7 +187,7 @@ def calculate_runs_test_binary(data: List[int]) -> Dict:
     }
 
 
-def cal_result_runs_bc(data: List[int]) -> Dict[str, Any]:
+def cal_result_runs_bc(param: RunsParamBC) -> Dict[str, Any]:
     """
     生成二分类变量游程检验分析的完整报告字典
     
@@ -223,6 +223,9 @@ def cal_result_runs_bc(data: List[int]) -> Dict[str, Any]:
             - remark: 备注信息（样本量和各类别数量），字符串类型
     """
     # 执行二分类游程检验
+    # 从参数对象解构
+    data = [int(x) for x in param.stats_data_list[0].data_list]
+
     results = calculate_runs_test_binary(data)
     
     # 构建结果字典

@@ -104,9 +104,8 @@ async def cor_kendall(param: CorParamKendall):
     临床应用: 用于分析小样本或存在异常值的等级数据之间的秩序关系
     """
     try:
-        # 提取数据列表并调用底层Kendall相关分析算法函数
-        data_list = [data.data_list for data in param.stats_data_list]
-        result = cal_result_cor_kendall(data_list)
+        # 调用底层Kendall相关分析算法函数
+        result = cal_result_cor_kendall(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="Kendall相关分析成功")
     except ValueError as e:

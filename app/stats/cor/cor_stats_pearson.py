@@ -196,7 +196,7 @@ def _interpret_correlation_strength(abs_r: float) -> str:
         return "很弱"
 
 
-def cal_result_cor_pearson(stats_data_list: List[List[float]]) -> Dict[str, Any]:
+def cal_result_cor_pearson(param: CorParamPearson) -> Dict[str, Any]:
     """
     生成Pearson相关分析统计分析的完整报告字典
     
@@ -214,6 +214,9 @@ def cal_result_cor_pearson(stats_data_list: List[List[float]]) -> Dict[str, Any]
             - correlation_results: 相关分析结果
             - interpretation: 统计解释
     """
+    # 从参数对象解构
+    stats_data_list = [data.data_list for data in param.stats_data_list]
+
     # 执行Pearson相关分析
     results = pearson_correlation_from_stats_data(stats_data_list)
     

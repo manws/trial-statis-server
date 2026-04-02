@@ -66,6 +66,7 @@ import math
 from typing import Dict, List, Any
 from scipy.stats import norm
 import numpy as np
+from app.schemas.request_data.z_param import ZParamIndep2
 
 
 def independent_sample_z_test_from_raw_data(raw_data_group1: List[float], raw_data_group2: List[float]) -> Dict:
@@ -182,49 +183,19 @@ def perform_independent_sample_z_test_from_raw(raw_data_group1: List[float], raw
     return results
 
 
-def cal_result_z_indep2(raw_data_group1: List[float], raw_data_group2: List[float]) -> Dict[str, Any]:
+def cal_result_z_indep2(param: ZParamIndep2) -> Dict[str, Any]:
     """
     生成基于原始数据的独立样本Z检验分析的完整报告字典
     
-    此函数整合了基于原始数据的独立样本Z检验的所有关键指标，生成标准化的字典格式报告，
-    适用于临床研究报告的需求，提供全面的Z检验结果。报告包括输入参数、
-    样本统计量、检验统计量和统计解释等信息，
-    便于临床医生和研究人员快速理解Z检验的特征。
-    
     Args:
-        raw_data_group1: 第一组原始数据列表，浮点数列表类型
-        raw_data_group2: 第二组原始数据列表，浮点数列表类型
+        param: ZParamIndep2对象，包含stats_data_list
     
     Returns:
-        Dict[str, Any]: 包含Z检验分析指标的字典，键为指标名称，值为对应的统计量
-            - table_name: 报告表格名称，固定为"独立样本Z检验分析（原始资料）"
-            - input_parameters: 输入参数信息
-                - sample1_n: 第一组样本量，整数类型
-                - sample1_mean: 第一组样本均数，浮点数类型
-                - sample1_std: 第一组样本标准差，浮点数类型
-                - sample2_n: 第二组样本量，整数类型
-                - sample2_mean: 第二组样本均数，浮点数类型
-                - sample2_std: 第二组样本标准差，浮点数类型
-            - sample_statistics: 样本统计量
-                - sample1_min: 第一组最小值，浮点数类型
-                - sample1_max: 第一组最大值，浮点数类型
-                - sample2_min: 第二组最小值，浮点数类型
-                - sample2_max: 第二组最大值，浮点数类型
-            - test_statistics: 检验统计量
-                - mean_difference: 均数差，浮点数类型
-                - standard_error: 标准误，浮点数类型
-                - z_value: Z值，浮点数类型
-                - p_value_two_sided: 双侧P值，浮点数类型
-            - significance_tests: 显著性检验结果
-                - p_greater_than_0_05: P值是否大于0.05，布尔类型
-                - p_greater_than_0_01: P值是否大于0.01，布尔类型
-                - significant_at_05: 0.05水平显著性，字符串类型
-                - significant_at_01: 0.01水平显著性，字符串类型
-            - interpretation: 统计解释
-                - z_test_interpretation: Z检验解释，字符串类型
-                - z_test_interpretation_01: 0.01水平解释，字符串类型
-            - remark: 备注信息，字符串类型
+        Dict[str, Any]: 包含Z检验分析指标的字典
     """
+    raw_data_group1 = param.stats_data_list[0].data_list
+    raw_data_group2 = param.stats_data_list[1].data_list
+
     # 执行独立样本Z检验
     results = perform_independent_sample_z_test_from_raw(raw_data_group1, raw_data_group2)
     

@@ -65,7 +65,7 @@ async def t_single1(param: TParamSingle1):
     """
     try:
         # 调用底层单样本t检验算法函数
-        result = cal_result_t_single1(param.pop_mean, param.n, param.sample_mean, param.sample_std)
+        result = cal_result_t_single1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="t单样本检验报告生成成功")
     except ValueError as e:
@@ -88,12 +88,8 @@ async def t_single2(param: TParamSingle2):
     临床应用: 用于基于原始数据比较单组数据与已知参考值的差异
     """
     try:
-        # 提取总体均数和原始数据
-        pop_mean = param.pop_mean
-        raw_data = param.stats_data_list[0].data_list
-        
         # 调用底层基于原始数据的单样本t检验算法函数
-        result = cal_result_t_single2(pop_mean, raw_data)
+        result = cal_result_t_single2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="t单样本检验报告生成成功")
     except ValueError as e:
@@ -116,12 +112,8 @@ async def t_paired(param: TParamPaired):
     临床应用: 用于比较同一受试者治疗前后的指标变化
     """
     try:
-        # 提取两组配对数据
-        data1 = param.stats_data_list[0].data_list
-        data2 = param.stats_data_list[1].data_list
-        
         # 调用底层配对样本t检验算法函数
-        result = cal_result_t_paired(data1, data2)
+        result = cal_result_t_paired(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="配对检验成功")
     except ValueError as e:
@@ -144,12 +136,8 @@ async def t_indep(param: TParamIndep):
     临床应用: 用于比较两组独立受试者的指标差异
     """
     try:
-        # 提取两组独立数据
-        data1 = param.stats_data_list[0].data_list
-        data2 = param.stats_data_list[1].data_list
-        
         # 调用底层独立样本t检验算法函数
-        result = cal_result_t_indep(data1, data2)
+        result = cal_result_t_indep(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="独立样本t检验成功")
     except ValueError as e:
@@ -173,7 +161,7 @@ async def t_param(param: TParamP):
     """
     try:
         # 调用底层t检验参数检验算法函数
-        result = cal_result_t_p(param.t_value, param.df)
+        result = cal_result_t_p(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="参数检验成功")
     except ValueError as e:

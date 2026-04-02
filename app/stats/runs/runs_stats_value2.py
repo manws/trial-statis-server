@@ -68,6 +68,7 @@ import math
 from typing import Any, Dict, List, Tuple
 from scipy.stats import norm
 import numpy as np
+from app.schemas.request_data.runs_param import RunsParamValue2
 
 
 def convert_to_binary_by_median(data: List[float]) -> List[int]:
@@ -329,7 +330,7 @@ def calculate_runs_test_value_by_median(data: List[float]) -> Dict[str, Any]:
     }
 
 
-def cal_result_runs_value2(data: List[float]) -> Dict[str, Any]:
+def cal_result_runs_value2(param: RunsParamValue2) -> Dict[str, Any]:
     """
     生成按中位数分类的数值变量游程检验分析的完整报告字典
     
@@ -403,6 +404,9 @@ def cal_result_runs_value2(data: List[float]) -> Dict[str, Any]:
         'P > 0.05'  # 或其他P值范围
     """
     # 执行按中位数分类的游程检验
+    # 从参数对象解构
+    data = param.stats_data_list[0].data_list
+
     results = calculate_runs_test_value_by_median(data)
     
     # 构建结果字典

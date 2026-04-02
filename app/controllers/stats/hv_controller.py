@@ -8,11 +8,11 @@ from app.schemas.request_data.hv_param import (
     HVParamHartley,
     HVParamLevene,
 )
-from app.stats.hv.hv_stats_bartlett import cal_report_hv_bartlett
-from app.stats.hv.hv_stats_bf import cal_report_hv_bf
-from app.stats.hv.hv_stats_f import perform_hv_f_test
-from app.stats.hv.hv_stats_hartley import cal_report_hv_hartley
-from app.stats.hv.hv_stats_levene import cal_report_hv_levene
+from app.stats.hv.hv_stats_bartlett import cal_result_hv_bartlett
+from app.stats.hv.hv_stats_bf import cal_result_hv_bf
+from app.stats.hv.hv_stats_f import cal_result_hv_f
+from app.stats.hv.hv_stats_hartley import cal_result_hv_hartley
+from app.stats.hv.hv_stats_levene import cal_result_hv_levene
 from app.utils.LoggerHelper import LoggerHelper
 from app.controllers.stats.utils import _wrap
 
@@ -25,7 +25,7 @@ router = APIRouter(prefix="/hv", tags=["Stats-HV"])
 @router.post("/bartlett", response_model=ResultData)
 async def hv_bartlett(param: HVParamBartlett):
     try:
-        report = cal_report_hv_bartlett(param)
+        report = cal_result_hv_bartlett(param)
         return _wrap(report, data=param.model_dump(), message="Bartlett检验成功")
     except Exception as e:
         LoggerHelper.error(f"hv_bartlett failed: {e}")
@@ -35,7 +35,7 @@ async def hv_bartlett(param: HVParamBartlett):
 @router.post("/bf", response_model=ResultData)
 async def hv_bf(param: HVParamBrownForsythe):
     try:
-        report = cal_report_hv_bf(param)
+        report = cal_result_hv_bf(param)
         return _wrap(report, data=param.model_dump(), message="Brown-Forsythe检验成功")
     except Exception as e:
         LoggerHelper.error(f"hv_bf failed: {e}")
@@ -45,7 +45,7 @@ async def hv_bf(param: HVParamBrownForsythe):
 @router.post("/f", response_model=ResultData)
 async def hv_f(param: HVParamF):
     try:
-        report = perform_hv_f_test(param)
+        report = cal_result_hv_f(param)
         return _wrap(report, data=param.model_dump(), message="F检验成功")
     except Exception as e:
         LoggerHelper.error(f"hv_f failed: {e}")
@@ -55,7 +55,7 @@ async def hv_f(param: HVParamF):
 @router.post("/hartley", response_model=ResultData)
 async def hv_hartley(param: HVParamHartley):
     try:
-        report = cal_report_hv_hartley(param)
+        report = cal_result_hv_hartley(param)
         return _wrap(report, data=param.model_dump(), message="Hartley检验成功")
     except Exception as e:
         LoggerHelper.error(f"hv_hartley failed: {e}")
@@ -65,7 +65,7 @@ async def hv_hartley(param: HVParamHartley):
 @router.post("/levene", response_model=ResultData)
 async def hv_levene(param: HVParamLevene):
     try:
-        report = cal_report_hv_levene(param)
+        report = cal_result_hv_levene(param)
         return _wrap(report, data=param.model_dump(), message="Levene检验成功")
     except Exception as e:
         LoggerHelper.error(f"hv_levene failed: {e}")

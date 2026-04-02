@@ -69,6 +69,7 @@ import numpy as np
 from scipy import stats
 from scipy.optimize import minimize
 from typing import Dict, List, Any
+from app.schemas.request_data.reg_param import RegParamLog2
 
 def calculate_binary_logistic_regression(x_data_list: List[List[float]], y_data: List[float]) -> Dict:
     """
@@ -325,7 +326,7 @@ def _generate_logit_equation(coefficients_info: List[Dict]) -> str:
     return f"logit(P) = {linear_eq}"
 
 
-def cal_result_reg_log2(x_data_list: List[List[float]], y_data: List[float]) -> Dict[str, Any]:
+def cal_result_reg_log2(param: RegParamLog2) -> Dict[str, Any]:
     """
     生成二元逻辑回归分析的完整报告字典
     
@@ -348,6 +349,11 @@ def cal_result_reg_log2(x_data_list: List[List[float]], y_data: List[float]) -> 
             - interpretation: 统计解释
     """
     # 执行二元逻辑回归分析
+    # 从参数对象解构: 最后一个是 y_data，其余是 x_data_list
+    all_data = [item.data_list for item in param.stats_data_list]
+    x_data_list = all_data[:-1]
+    y_data = all_data[-1]
+
     results = calculate_binary_logistic_regression(x_data_list, y_data)
     
     # 构建结果字典

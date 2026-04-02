@@ -307,6 +307,9 @@ def cal_result_t_indep(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
                 - t_test_interpretation_01: 0.01水平解释，字符串类型
             - remark: 备注信息，字符串类型
     """
+    # 从参数对象解构为底层函数所需的 List[Dict] 格式
+    stats_data_list = [item.model_dump() for item in param.stats_data_list]
+
     # 执行独立t检验
     results = perform_independent_t_test(stats_data_list)
     

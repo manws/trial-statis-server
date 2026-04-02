@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List
 from scipy.stats import norm, rankdata
+from app.schemas.request_data.rs_param import RSParamOD1
 import numpy as np
 
 
@@ -177,7 +178,7 @@ def wilcoxon_rank_sum_test_ordinal(group1_data: List[float], group2_data: List[f
     }
 
 
-def cal_result_rs_od1(group1_data: List[float], group2_data: List[float]) -> Dict:
+def cal_result_rs_od1(param: RSParamOD1) -> Dict:
     """
     生成两样本Wilcoxon秩和检验统计分析的完整报告字典
     
@@ -204,6 +205,10 @@ def cal_result_rs_od1(group1_data: List[float], group2_data: List[float]) -> Dic
         raise ValueError("两组数据都不能为空")
     
     # 执行Wilcoxon秩和检验
+    # 从参数对象解构
+    group1_data = param.stats_data_list[0].data_list
+    group2_data = param.stats_data_list[1].data_list
+
     results = wilcoxon_rank_sum_test_ordinal(group1_data, group2_data)
     
     # 构建结果字典

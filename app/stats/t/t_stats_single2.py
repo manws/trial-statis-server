@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List, Any
 from scipy.stats import t
+from app.schemas.request_data.t_param import TParamSingle2
 import numpy as np
 
 
@@ -200,7 +201,7 @@ def perform_single_sample_t_test_from_raw(pop_mean: float, raw_data: List[float]
     return results
 
 
-def cal_result_t_single2(pop_mean: float, raw_data: List[float]) -> Dict[str, Any]:
+def cal_result_t_single2(param: TParamSingle2) -> Dict[str, Any]:
     """
     生成基于原始数据的单样本t检验分析的完整报告字典
     
@@ -281,6 +282,10 @@ def cal_result_t_single2(pop_mean: float, raw_data: List[float]) -> Dict[str, An
         >>> print(result['significance_tests']['significant_at_05'])
         '不显著'  # 示例值
     """
+    # 从参数对象解构
+    pop_mean = param.pop_mean
+    raw_data = param.stats_data_list[0].data_list
+
     # 执行单样本t检验
     results = perform_single_sample_t_test_from_raw(pop_mean, raw_data)
     

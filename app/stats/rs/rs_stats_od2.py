@@ -218,7 +218,7 @@ def perform_kruskal_wallis_h_test(groups_data: List[List[float]]) -> Dict:
     return results
 
 
-def cal_result_rs_od2(groups_data: List[List[float]]) -> Dict[str, Any]:
+def cal_result_rs_od2(param: RSParamOD2) -> Dict[str, Any]:
     """
     生成多样本Kruskal-Wallis H检验分析的完整报告字典
     
@@ -241,6 +241,9 @@ def cal_result_rs_od2(groups_data: List[List[float]]) -> Dict[str, Any]:
             - interpretation: 统计解释
     """
     # 执行Kruskal-Wallis H检验
+    # 从参数对象解构
+    groups_data = [item.data_list for item in param.stats_data_list]
+
     results = perform_kruskal_wallis_h_test(groups_data)
     
     # 构建结果字典

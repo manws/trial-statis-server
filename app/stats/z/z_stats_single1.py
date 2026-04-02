@@ -64,6 +64,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, Any
 from scipy.stats import norm
+from app.schemas.request_data.z_param import ZParamSingle1
 
 
 def single_sample_z_test(pop_mean: float, pop_std: float, n: int, sample_mean: float) -> Dict:
@@ -151,43 +152,21 @@ def perform_single_sample_z_test(pop_mean: float, pop_std: float, n: int, sample
     return results
 
 
-def cal_result_z_single1(pop_mean: float, pop_std: float, n: int, sample_mean: float) -> Dict[str, Any]:
+def cal_result_z_single1(param: ZParamSingle1) -> Dict[str, Any]:
     """
     生成单样本Z检验分析的完整报告字典
     
-    此函数整合了单样本Z检验的所有关键指标，生成标准化的字典格式报告，
-    适用于临床研究报告的需求，提供全面的Z检验结果。报告包括输入参数、
-    检验统计量和统计解释等信息，
-    便于临床医生和研究人员快速理解Z检验的特征。
-    
     Args:
-        pop_mean: 总体均数，浮点数类型
-        pop_std: 总体标准差，浮点数类型
-        n: 样本量，整数类型
-        sample_mean: 样本均数，浮点数类型
+        param: ZParamSingle1对象，包含pop_mean, pop_std, n, sample_mean
     
     Returns:
-        Dict[str, Any]: 包含Z检验分析指标的字典，键为指标名称，值为对应的统计量
-            - table_name: 报告表格名称，固定为"单样本Z检验分析"
-            - input_parameters: 输入参数信息
-                - population_mean: 总体均数，浮点数类型
-                - population_std: 总体标准差，浮点数类型
-                - sample_size: 样本量，整数类型
-                - sample_mean: 样本均数，浮点数类型
-            - test_statistics: 检验统计量
-                - standard_error: 标准误，浮点数类型
-                - z_value: Z值，浮点数类型
-                - p_value_two_sided: 双侧P值，浮点数类型
-            - significance_tests: 显著性检验结果
-                - p_greater_than_0_05: P值是否大于0.05，布尔类型
-                - p_greater_than_0_01: P值是否大于0.01，布尔类型
-                - significant_at_05: 0.05水平显著性，字符串类型
-                - significant_at_01: 0.01水平显著性，字符串类型
-            - interpretation: 统计解释
-                - z_test_interpretation: Z检验解释，字符串类型
-                - z_test_interpretation_01: 0.01水平解释，字符串类型
-            - remark: 备注信息，字符串类型
+        Dict[str, Any]: 包含Z检验分析指标的字典
     """
+    pop_mean = param.pop_mean
+    pop_std = param.pop_std
+    n = param.n
+    sample_mean = param.sample_mean
+
     # 执行单样本Z检验
     results = perform_single_sample_z_test(pop_mean, pop_std, n, sample_mean)
     

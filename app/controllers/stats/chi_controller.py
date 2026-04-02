@@ -181,8 +181,8 @@ async def chi_paired(param: ChiSquareParamPaired):
     临床应用: 用于比较同一组受试者在不同时间或条件下的分类变化
     """
     try:
-        # 提取参数并调用底层配对卡方检验算法函数
-        result = cal_result_chi_paired(param.a, param.b, param.c, param.d)
+        # 调用底层配对卡方检验算法函数
+        result = cal_result_chi_paired(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="配对资料卡方检验成功")
     except ValueError as e:

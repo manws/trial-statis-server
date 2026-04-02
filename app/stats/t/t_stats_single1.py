@@ -64,6 +64,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, Any
 from scipy.stats import t
+from app.schemas.request_data.t_param import TParamSingle1
 
 
 def single_sample_t_test(pop_mean: float, n: int, sample_mean: float, sample_std: float) -> Dict[str, Any]:
@@ -281,105 +282,23 @@ def perform_single_sample_t_test(pop_mean: float, n: int, sample_mean: float, sa
     return results
 
 
-def cal_result_t_single1(pop_mean: float, n: int, sample_mean: float, sample_std: float) -> Dict[str, Any]:
+def cal_result_t_single1(param: TParamSingle1) -> Dict[str, Any]:
     """
     生成单样本t检验分析的完整报告字典
-    
-    此函数整合了单样本t检验的所有关键指标，生成标准化的字典格式报告，
-    适用于临床研究报告的需求，提供全面的t检验结果。报告包括输入参数、
-    检验统计量和统计解释等信息，便于临床医生和研究人员快速理解t检验的特征。
-    
-    【函数特点】:
-    1. 标准化输出：统一的字典结构便于后续处理和展示
-    2. 信息完整：包含从原始参数到最终解释的全链条信息
-    3. 易于集成：适合嵌入报告生成系统或数据可视化组件
-    4. 临床友好：备注信息提供关键参数的快速概览
-    
-    【报告结构说明】:
-    - table_name: 标识报告类型，便于分类和检索
-    - input_parameters: 原始输入数据，用于复核和追溯
-    - test_statistics: 核心统计指标，供专业人员深入分析
-    - significance_tests: 二分类结论，便于快速决策
-    - interpretation: 自然语言解释，降低统计知识门槛
-    - remark: 关键信息摘要，支持快速浏览
-    
-    【临床应用示例】:
-    案例：评估新型降糖药的疗效
-    - 背景：已知糖尿病患者空腹血糖控制目标为7.0 mmol/L
-    - 数据：30名患者用药后空腹血糖均值为6.2 mmol/L，标准差1.5
-    - 分析：调用本函数检验实际均值是否显著低于目标值
-    - 决策：根据结果判断药物是否达到预期效果
-    
-    【数据质量保证】:
-    1. 数值精度：所有浮点数保留足够小数位避免舍入误差
-    2. 类型安全：明确指定数据类型防止类型混淆
-    3. 完整性检查：确保所有必需字段都存在且有效
-    4. 一致性验证：各部分数据逻辑自洽
-    
+
     Args:
-        pop_mean (float): 总体均数（假设值），浮点数类型
-            代表理论值、标准值或历史对照值
-        n (int): 样本量，整数类型
-            参与分析的独立观测值数量，必须≥2
-        sample_mean (float): 样本均数，浮点数类型
-            由样本数据计算得到的算术平均值
-        sample_std (float): 样本标准差，浮点数类型
-            样本数据的标准差，反映数据离散程度，必须>0
+        param: TParamSingle1对象，包含pop_mean, n, sample_mean, sample_std
     
     Returns:
-        Dict[str, Any]: 包含单样本t检验分析指标的字典，结构如下：
-            - table_name (str): 报告表格名称，固定为"单样本t检验分析"
-            
-            - input_parameters (dict): 输入参数信息
-                - population_mean (float): 总体均数
-                - sample_size (int): 样本量
-                - sample_mean (float): 样本均数
-                - sample_std (float): 样本标准差
-            
-            - test_statistics (dict): 检验统计量
-                - degrees_of_freedom (int): 自由度，等于n-1
-                - t_value (float): t统计量值，反映差异与误差的比值
-                - p_value_two_sided (float): 双侧P值，衡量统计显著性
-            
-            - significance_tests (dict): 显著性检验结果
-                - p_greater_than_0_05 (bool): P值是否大于0.05
-                - p_greater_than_0_01 (bool): P值是否大于0.01
-                - significant_at_05 (str): "显著"或"不显著"（0.05水平）
-                - significant_at_01 (str): "显著"或"不显著"（0.01水平）
-            
-            - interpretation (dict): 统计解释
-                - t_test_interpretation (str): 0.05水平的专业解释
-                - t_test_interpretation_01 (str): 0.01水平的专业解释
-            
-            - remark (str): 备注信息，包含关键参数的格式化摘要
-    
-    Raises:
-        ValueError: 当输入参数无效时抛出，具体见perform_single_sample_t_test
-    
-    See Also:
-        single_sample_t_test: 核心统计算法
-        perform_single_sample_t_test: 参数验证和执行函数
-    
-    Example:
-        >>> report = cal_result_t_single1(
-        ...     pop_mean=120.0,      # 目标收缩压
-        ...     n=50,                # 50名患者
-        ...     sample_mean=115.3,   # 实际均值
-        ...     sample_std=12.5      # 标准差
-        ... )
-        >>> print(report['table_name'])
-        '单样本t检验分析'
-        >>> print(report['remark'])
-        '总体均数：120.0, 样本量：50, 样本均数：115.3000, 样本标准差：12.5000'
-        >>> print(report['interpretation']['t_test_interpretation'])
+        Dict[str, Any]: 包含t检验分析指标的字典
     """
-    # 执行单样本t检验
-    # 调用perform_single_sample_t_test获取完整的检验结果
-    # 该函数会进行参数验证并返回标准化的结果字典
+    pop_mean = param.pop_mean
+    n = param.n
+    sample_mean = param.sample_mean
+    sample_std = param.sample_std
+
     results = perform_single_sample_t_test(pop_mean, n, sample_mean, sample_std)
     
-    # 构建结果字典
-    # 整合所有检验结果，添加表格名称和备注信息，形成完整的报告结构
     result_dict = {
         "table_name": "单样本t检验分析",
         "input_parameters": results["input_parameters"],

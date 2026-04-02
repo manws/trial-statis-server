@@ -61,7 +61,7 @@ async def z_single1(param: ZParamSingle1):
     """
     try:
         # 调用底层单样本Z检验算法函数
-        result = cal_result_z_single1(param.pop_mean, param.pop_std, param.n, param.sample_mean)
+        result = cal_result_z_single1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="z单样本1检验报告生成成功")
     except ValueError as e:
@@ -84,13 +84,8 @@ async def z_single2(param: ZParamSingle2):
     临床应用: 用于基于原始数据比较单组数据与已知参考值的差异
     """
     try:
-        # 提取总体均数、总体标准差和原始数据
-        pop_mean = param.pop_mean
-        pop_std = param.pop_std
-        raw_data = param.stats_data_list[0].data_list
-        
         # 调用底层基于原始数据的单样本Z检验算法函数
-        result = cal_result_z_single2(pop_mean, pop_std, raw_data)
+        result = cal_result_z_single2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="z单样本2检验报告生成成功")
     except ValueError as e:
@@ -113,11 +108,8 @@ async def z_indep1(param: ZParamIndep1):
     临床应用: 用于比较两组独立受试者的指标差异
     """
     try:
-        # 提取两组样本的参数
-        result = cal_result_z_indep1(
-            param.n1, param.mean1, param.std1,
-            param.n2, param.mean2, param.std2
-        )
+        # 调用底层独立样本Z检验算法函数
+        result = cal_result_z_indep1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="z独立样本1检验报告生成成功")
     except ValueError as e:
@@ -140,12 +132,8 @@ async def z_indep2(param: ZParamIndep2):
     临床应用: 用于基于原始数据比较两组独立受试者的指标差异
     """
     try:
-        # 提取两组原始数据
-        data1 = param.stats_data_list[0].data_list
-        data2 = param.stats_data_list[1].data_list
-        
         # 调用底层基于原始数据的独立样本Z检验算法函数
-        result = cal_result_z_indep2(data1, data2)
+        result = cal_result_z_indep2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="z独立样本2检验报告生成成功")
     except ValueError as e:

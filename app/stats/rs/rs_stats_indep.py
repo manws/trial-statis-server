@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, List, Tuple
 from scipy.stats import norm, rankdata
+from app.schemas.request_data.rs_param import RSParamIndep
 import numpy as np
 
 
@@ -192,7 +193,7 @@ def wilcoxon_rank_sum_test(group1_data: List[float], group2_data: List[float]) -
     return mann_whitney_u_test(group1_data, group2_data)
 
 
-def cal_result_rs_indep(group1_data: List[float], group2_data: List[float]) -> Dict:
+def cal_result_rs_indep(param: RSParamIndep) -> Dict:
     """
     生成两独立样本Mann-Whitney U检验统计分析的完整报告字典
     
@@ -219,6 +220,10 @@ def cal_result_rs_indep(group1_data: List[float], group2_data: List[float]) -> D
         raise ValueError("两组数据都不能为空")
     
     # 执行Mann-Whitney U检验
+    # 从参数对象解构
+    group1_data = param.stats_data_list[0].data_list
+    group2_data = param.stats_data_list[1].data_list
+
     results = mann_whitney_u_test(group1_data, group2_data)
     
     # 构建结果字典

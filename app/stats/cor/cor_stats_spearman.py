@@ -202,6 +202,9 @@ def cal_result_cor_spearman(stats_data_list: List[List[float]]) -> Dict[str, Any
             - interpretation: 统计解释
     """
     # 执行Spearman相关分析
+    # 从参数对象解构
+    stats_data_list = [data.data_list for data in param.stats_data_list]
+
     results = spearman_correlation_from_stats_data(stats_data_list)
     
     # 构建结果字典

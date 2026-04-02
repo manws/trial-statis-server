@@ -65,6 +65,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 
 import numpy as np
 from typing import Dict, List, Any
+from app.schemas.request_data.sur_param import SurParamLT
 
 
 def life_table_survival_analysis(stats_data_list: List[Dict[str, Any]], time_intervals: List[str]) -> Dict:
@@ -288,7 +289,7 @@ def perform_life_table_survival(stats_data_list: List[Dict[str, Any]], time_inte
     return results
 
 
-def cal_result_sur_lt(stats_data_list: List[Dict[str, Any]], time_intervals: List[str]) -> Dict[str, Any]:
+def cal_result_sur_lt(param: SurParamLT) -> Dict[str, Any]:
     """
     生成寿命表法生存分析的完整报告字典
     
@@ -326,6 +327,10 @@ def cal_result_sur_lt(stats_data_list: List[Dict[str, Any]], time_intervals: Lis
             - remark: 备注信息，字符串类型
     """
     # 执行寿命表分析
+    # 从参数对象解构
+    stats_data_list = [item.model_dump() for item in param.stats_data_list]
+    time_intervals = param.stats_name.name_list
+
     results = perform_life_table_survival(stats_data_list, time_intervals)
     
     # 构建结果字典

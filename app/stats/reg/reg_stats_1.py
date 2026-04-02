@@ -68,6 +68,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.reg_param import RegParam1
 
 
 def calculate_simple_linear_regression(x_data: List[float], y_data: List[float]) -> Dict:
@@ -198,7 +199,7 @@ def calculate_simple_linear_regression(x_data: List[float], y_data: List[float])
     }
 
 
-def cal_result_reg_1(x_data: List[float], y_data: List[float]) -> Dict[str, Any]:
+def cal_result_reg_1(param: RegParam1) -> Dict[str, Any]:
     """
     生成一元线性回归分析的完整报告字典
     
@@ -220,6 +221,10 @@ def cal_result_reg_1(x_data: List[float], y_data: List[float]) -> Dict[str, Any]
             - interpretation: 统计解释
     """
     # 执行一元线性回归分析
+    # 从参数对象解构
+    x_data = param.stats_data_list[0].data_list
+    y_data = param.stats_data_list[1].data_list
+
     results = calculate_simple_linear_regression(x_data, y_data)
     
     # 构建结果字典

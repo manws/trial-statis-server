@@ -69,12 +69,8 @@ async def rs_paired(param: RSParamPaired):
     临床应用：用于比较同一受试者治疗前后的指标变化
     """
     try:
-        # 提取两组配对数据
-        data1 = param.stats_data_list[0].data_list
-        data2 = param.stats_data_list[1].data_list
-        
         # 调用底层配对样本秩和检验算法函数
-        result = cal_result_rs_paired(data1, data2)
+        result = cal_result_rs_paired(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="配对样本秩和检验成功")
     except ValueError as e:
@@ -97,9 +93,8 @@ async def rs_single(param: RSParamSingle):
     临床应用：用于比较单组数据与已知参考值的差异
     """
     try:
-        # 提取参数并调用底层单样本秩和检验算法函数
-        sample_data = param.stats_data_list[0].data_list
-        result = cal_result_rs_single(sample_data, param.mean)
+        # 调用底层单样本秩和检验算法函数
+        result = cal_result_rs_single(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="单样本秩和检验成功")
     except ValueError as e:
@@ -122,12 +117,8 @@ async def rs_indep(param: RSParamIndep):
     临床应用：用于比较两组独立受试者的指标差异
     """
     try:
-        # 提取两组独立数据
-        data1 = param.stats_data_list[0].data_list
-        data2 = param.stats_data_list[1].data_list
-        
         # 调用底层独立样本秩和检验算法函数
-        result = cal_result_rs_indep(data1, data2)
+        result = cal_result_rs_indep(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="独立样本秩和检验成功")
     except ValueError as e:
@@ -150,11 +141,8 @@ async def rs_od1(param: RSParamOD1):
     临床应用：用于比较两个等级资料的差异
     """
     try:
-        # 提取数据列表
-        data_list = param.stats_data_list[0].data_list
-        
         # 调用底层有序分组秩和检验算法函数
-        result = cal_result_rs_od1(data_list)
+        result = cal_result_rs_od1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="有序分组秩和检验 OD1 成功")
     except ValueError as e:
@@ -177,11 +165,8 @@ async def rs_od2(param: RSParamOD2):
     临床应用：用于比较多个等级资料的差异
     """
     try:
-        # 提取多组数据
-        groups_data = [stats_data.data_list for stats_data in param.stats_data_list]
-        
         # 调用底层多组有序分组秩和检验算法函数
-        result = cal_result_rs_od2(groups_data)
+        result = cal_result_rs_od2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="多组有序分组秩和检验 OD2 成功")
     except ValueError as e:
@@ -204,11 +189,8 @@ async def rs_kwh(param: RSParamKWH):
     临床应用：用于比较多组独立受试者的指标差异
     """
     try:
-        # 提取多组数据
-        groups_data = [stats_data.data_list for stats_data in param.stats_data_list]
-        
         # 调用底层 Kruskal-Wallis H 检验算法函数
-        result = cal_result_rs_kwh(groups_data)
+        result = cal_result_rs_kwh(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="Kruskal-Wallis H 检验成功")
     except ValueError as e:
@@ -231,11 +213,8 @@ async def rs_fm(param: RSParamFM):
     临床应用：用于比较同一受试者在多个时间点或处理条件下的指标差异
     """
     try:
-        # 提取多组相关数据
-        groups_data = [stats_data.data_list for stats_data in param.stats_data_list]
-        
         # 调用底层 Friedman 检验算法函数
-        result = cal_result_rs_fm(groups_data)
+        result = cal_result_rs_fm(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="Friedman 检验成功")
     except ValueError as e:
