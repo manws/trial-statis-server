@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from typing import Dict
+from typing import Dict, Optional
 
 class ResultData(BaseModel):
     code : int
     message : str
-    result : Dict
+    result : Optional[Dict] = None

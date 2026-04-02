@@ -98,7 +98,8 @@ async def rs_single(param: RSParamSingle):
     """
     try:
         # 提取参数并调用底层单样本秩和检验算法函数
-        result = cal_result_rs_single(param.data_list, param.median)
+        sample_data = param.stats_data_list[0].data_list
+        result = cal_result_rs_single(sample_data, param.mean)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="单样本秩和检验成功")
     except ValueError as e:

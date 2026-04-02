@@ -71,8 +71,8 @@ async def chi_4_1(param: ChiSquareParam1_1):
     临床应用: 用于比较两组间的阳性率或发生率差异
     """
     try:
-        # 提取参数并调用底层四格表卡方检验算法函数
-        result = cal_result_chi4(param.a, param.b, param.c, param.d)
+        # 调用底层四格表卡方检验算法函数
+        result = cal_result_chi4(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="四格表卡方检验成功")
     except ValueError as e:
@@ -101,8 +101,9 @@ async def chi_4_2(param: ChiSquareParam1_2):
         c = param.c
         d = param.n2 - param.c
         
-        # 调用底层四格表卡方检验算法函数
-        result = cal_result_chi4(a, b, c, d)
+        # 构造四格表参数对象并调用底层算法函数
+        chi4_param = ChiSquareParam1_1(a=a, b=b, c=c, d=d)
+        result = cal_result_chi4(chi4_param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="四格表卡方检验成功")
     except ValueError as e:
@@ -131,8 +132,9 @@ async def chi_4_3(param: ChiSquareParam1_3):
         b = param.n1 - a
         d = param.n2 - c
         
-        # 调用底层四格表卡方检验算法函数
-        result = cal_result_chi4(a, b, c, d)
+        # 构造四格表参数对象并调用底层算法函数
+        chi4_param = ChiSquareParam1_1(a=a, b=b, c=c, d=d)
+        result = cal_result_chi4(chi4_param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="四格表卡方检验成功")
     except ValueError as e:

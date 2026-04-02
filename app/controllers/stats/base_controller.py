@@ -158,8 +158,8 @@ async def bino1(param: BaseParamBino1):
     临床应用: 用于计算特定事件发生的概率，如治疗成功的概率
     """
     try:
-        # 提取参数并调用底层二项分布概率计算算法函数
-        result = cal_result_bino1(param.sample_size, param.total_posi_p)
+        # 调用底层二项分布概率计算算法函数
+        result = cal_result_bino1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="二项分布概率计算报告生成成功")
     except ValueError as e:
@@ -181,8 +181,8 @@ async def bino2(param: BaseParamBino2):
     临床应用: 用于估计总体成功率的置信区间，如治愈率的置信区间
     """
     try:
-        # 提取参数并调用底层总体率区间估计算法函数
-        result = cal_result_bino2(param.posi_num, param.sample_size, param.confidence)
+        # 调用底层总体率区间估计算法函数
+        result = cal_result_bino2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="总体率区间估计报告生成成功")
     except ValueError as e:
@@ -204,8 +204,8 @@ async def bino3(param: BaseParamBino3):
     临床应用: 用于比较样本成功率与已知总体成功率的差异
     """
     try:
-        # 提取参数并调用底层样本率与总体率比较算法函数
-        result = cal_result_bino3(param.sample_size, param.posi_num, param.total_posi_p)
+        # 调用底层样本率与总体率比较算法函数
+        result = cal_result_bino3(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="样本率与总体率比较报告生成成功")
     except ValueError as e:
@@ -227,8 +227,8 @@ async def bino4(param: BaseParamBino4):
     临床应用: 用于比较两种治疗方法的成功率是否存在差异
     """
     try:
-        # 提取参数并调用底层两样本率比较算法函数
-        result = cal_result_bino4(param.posi_num1, param.sample_size1, param.posi_num2, param.sample_size2)
+        # 调用底层两样本率比较算法函数
+        result = cal_result_bino4(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="两样本率比较报告生成成功")
     except ValueError as e:
@@ -253,8 +253,8 @@ async def pois1(param: BaseParamPois1, x: int = Body(..., embed=True)):
     临床应用: 用于计算稀有事件发生的概率，如不良反应发生概率
     """
     try:
-        # 提取参数并调用底层泊松分布概率计算算法函数
-        result = cal_result_pois1(param.avg_num, x)
+        # 调用底层泊松分布概率计算算法函数
+        result = cal_result_pois1(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="泊松分布概率计算报告生成成功")
     except ValueError as e:
@@ -278,8 +278,8 @@ async def pois2(param: BaseParamPois2, observed_events: int = Body(..., embed=Tr
     临床应用: 用于估计稀有事件发生率的置信区间
     """
     try:
-        # 提取参数并调用底层泊松分布区间估计算法函数
-        result = cal_result_pois2(param.confidence, observed_events)
+        # 调用底层泊松分布区间估计算法函数
+        result = cal_result_pois2(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="总体均数区间估计报告生成成功")
     except ValueError as e:
@@ -301,8 +301,8 @@ async def pois3(param: BaseParamPois3):
     临床应用: 用于比较观察到的事件率与已知总体事件率的差异
     """
     try:
-        # 提取参数并调用底层泊松分布单样本比较算法函数
-        result = cal_result_pois3(param.observed_events, param.expected_avg, param.confidence)
+        # 调用底层泊松分布单样本比较算法函数
+        result = cal_result_pois3(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="样本均数与总体均数比较报告生成成功")
     except ValueError as e:
@@ -324,8 +324,8 @@ async def pois4(param: BaseParamPois4):
     临床应用: 用于比较两种条件下稀有事件发生率的差异
     """
     try:
-        # 提取参数并调用底层泊松分布两样本比较算法函数
-        result = cal_result_pois4(param.observed_events1, param.time1, param.observed_events2, param.time2)
+        # 调用底层泊松分布两样本比较算法函数
+        result = cal_result_pois4(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="两样本均数比较报告生成成功")
     except ValueError as e:

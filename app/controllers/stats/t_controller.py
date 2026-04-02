@@ -173,7 +173,7 @@ async def t_param(param: TParamP):
     """
     try:
         # 调用底层t检验参数检验算法函数
-        result = cal_result_t_p(param.t_value, param.df, param.test_type)
+        result = cal_result_t_p(param.t_value, param.df)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="参数检验成功")
     except ValueError as e:
