@@ -248,11 +248,15 @@ def q_clustering_from_stats_data(stats_data_list: List[List[float]],
     # 标准化数据
     standardized_data = standardize_data(data_matrix, std_type)
     
-    # 计算距离矩阵
+    # 计算距离矩阵（方阵形式，用于摘要统计）
     distance_matrix = compute_distance_matrix(standardized_data, dis_type)
     
-    # 执行层次聚类
-    linkage_matrix = hierarchical_cluster(distance_matrix, clu_method)
+    # 将方阵转换为压缩距离向量用于 linkage
+    from scipy.spatial.distance import squareform as to_condensed
+    condensed_dist = to_condensed(distance_matrix)
+    
+    # 执行层次聚类（传入压缩距离向量）
+    linkage_matrix = hierarchical_cluster(condensed_dist, clu_method)
     
     # 获取聚类标签
     cluster_labels = get_clusters(linkage_matrix, k)

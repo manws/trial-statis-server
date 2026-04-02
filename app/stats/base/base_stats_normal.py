@@ -177,7 +177,7 @@ def skewness_z_score(data: List[float]) -> float:
     
     skew = skewness(data)
     # 偏度的标准误差
-    se_skewness = math.sqrt((n * (n - 1)) / ((n - 2) * (n + 1) * (n + 3)))
+    se_skewness = math.sqrt((6 * n * (n - 1)) / ((n - 2) * (n + 1) * (n + 3)))
     
     return skew / se_skewness
 
@@ -287,7 +287,7 @@ def cal_result_normal(data: List[float]) -> Dict[str, Any]:
     
     # α=0.05 和 α=0.1 水平下的判断
     alpha_05 = "显著" if abs(skewness_z) > 1.96 or abs(kurtosis_z) > 1.96 else "不显著"
-    alpha_01 = "显著" if abs(skewness_z) > 1.645 or abs(kurtosis_z) > 1.645 else "不显著"
+    alpha_01 = "显著" if abs(skewness_z) > 2.576 or abs(kurtosis_z) > 2.576 else "不显著"
     
     # 构建结果字典
     result_dict = {

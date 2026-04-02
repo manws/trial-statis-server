@@ -191,8 +191,8 @@ def round_to_decimal(value: float, decimal_places: int) -> float:
     Returns:
         float: 四舍五入后的浮点数值
     """
-    multiplier = 10 ** decimal_places
-    rounded_value = Decimal(str(value)).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    quantize_str = '0.' + '0' * decimal_places if decimal_places > 0 else '1'
+    rounded_value = Decimal(str(value)).quantize(Decimal(quantize_str), rounding=ROUND_HALF_UP)
     return float(rounded_value)
 
 

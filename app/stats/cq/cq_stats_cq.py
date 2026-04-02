@@ -112,24 +112,23 @@ def cochran_q_test(data_matrix: List[List[int]]) -> Dict:
                 C[i] += 1
     
     # 计算Cochran's Q统计量
-    # Q = (n-1) * Σ(Lj - L_bar)² / (ΣCi - ΣCi²/n)
-    # 其中 L_bar = ΣLj/k，k为处理数
+    # 标准公式: Q = (k-1) * [k*ΣLj² - T²] / [k*T - ΣCi²]
+    # 其中 T = ΣLj = ΣCi, k为处理数
     
-    L_sum = sum(L)
-    L_bar = L_sum / n_treatments
-    
-    numerator = sum((Lj - L_bar) ** 2 for Lj in L)
+    L_sum = sum(L)  # T
+    L_squared_sum = sum(Lj ** 2 for Lj in L)  # ΣLj²
     
     C_sum = sum(C)
     C_squared_sum = sum(ci ** 2 for ci in C)
     
-    denominator = C_sum - C_squared_sum / n_subjects
+    numerator = n_treatments * L_squared_sum - L_sum ** 2
+    denominator = n_treatments * C_sum - C_squared_sum
     
     # 避免除零错误
     if denominator == 0:
-        raise ValueError("分母为零，无法计算Q统计量")
+        raise ValueError("分母为零，无法计算Q统计量（所有受试者的成功总数相同）")
     
-    Q_statistic = (n_subjects - 1) * numerator / denominator
+    Q_statistic = (n_treatments - 1) * numerator / denominator
     
     # 自由度
     df = n_treatments - 1

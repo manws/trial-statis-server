@@ -126,8 +126,8 @@ def kaplan_meier_survival_raw_data(stats_data_list: List[Dict[str, Any]]) -> Dic
         event_counts = np.zeros(n_unique)
         censored_counts = np.zeros(n_unique)
         
-        # 计算累积风险和生存概率
-        cumulative_hazard = 0.0
+        # 计算生存概率（标准 Kaplan-Meier 乘积极限估计）
+        cumulative_survival = 1.0
         
         for j, time_point in enumerate(unique_times):
             # 计算在该时间点的风险集大小
@@ -142,15 +142,10 @@ def kaplan_meier_survival_raw_data(stats_data_list: List[Dict[str, Any]]) -> Dic
             censored_at_time = np.sum((sorted_times == time_point) & (sorted_outcomes == 0))
             censored_counts[j] = censored_at_time
             
-            # 计算该时间点的死亡概率
+            # 标准 KM 乘积极限: S(t) = S(t-1) * (1 - d/n)
             if at_risk > 0:
-                death_prob = events_at_time / at_risk
-                
-                # 更新累积风险
-                cumulative_hazard += death_prob
-                
-                # 计算生存概率
-                survival_prob[j] = np.exp(-cumulative_hazard)
+                cumulative_survival *= (1 - events_at_time / at_risk)
+                survival_prob[j] = cumulative_survival
                 
                 # 计算标准误（Greenwood公式）
                 if survival_prob[j] > 0:

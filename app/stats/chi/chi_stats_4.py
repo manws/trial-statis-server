@@ -89,20 +89,31 @@ def chi_square_test_4fold(a: int, b: int, c: int, d: int) -> Dict[str, Any]:
     # 计算总计
     n = a + b + c + d  # 总样本数
     
+    # 边缘合计
+    row1 = a + b
+    row2 = c + d
+    col1 = a + c
+    col2 = b + d
+    
+    # 除零保护
+    denom = row1 * row2 * col1 * col2
+    if denom == 0:
+        raise ValueError("四格表的行合计或列合计不能为0")
+    
     # 计算理论频数
-    ta = (a + b) * (a + c) / n  # 行1列1的理论频数
-    tb = (a + b) * (b + d) / n  # 行1列2的理论频数
-    tc = (c + d) * (a + c) / n  # 行2列1的理论频数
-    td = (c + d) * (b + d) / n  # 行2列2的理论频数
+    ta = row1 * col1 / n
+    tb = row1 * col2 / n
+    tc = row2 * col1 / n
+    td = row2 * col2 / n
     
     # 检查理论频数是否满足卡方检验要求
     min_theoretical = min(ta, tb, tc, td)
     
     # 计算Pearson卡方统计量
-    chi_square = n * (a * d - b * c) ** 2 / ((a + b) * (c + d) * (a + c) * (b + d))
+    chi_square = n * (a * d - b * c) ** 2 / denom
     
     # 计算Yates校正卡方统计量
-    chi_square_yates = n * (abs(a * d - b * c) - 0.5) ** 2 / ((a + b) * (c + d) * (a + c) * (b + d))
+    chi_square_yates = n * (abs(a * d - b * c) - n / 2) ** 2 / denom
     
     # 计算p值
     p_value = 1 - chi2.cdf(chi_square, 1)  # 自由度为1

@@ -184,6 +184,14 @@ def calculate_relative_risk(n1: int, x1: int, n2: int, x2: int) -> Dict[str, flo
             'upper_bound': float('inf')
         }
     
+    if p1 == 0:
+        return {
+            'relative_risk': 0.0,
+            'log_rr_se': float('inf'),
+            'lower_bound': 0.0,
+            'upper_bound': float('inf')
+        }
+    
     rr = p1 / p2
     log_rr = math.log(rr)
     

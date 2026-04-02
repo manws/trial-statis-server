@@ -121,7 +121,7 @@ def wilcoxon_rank_sum_test_ordinal(group1_data: List[float], group2_data: List[f
     unique_values, counts = np.unique(combined_data, return_counts=True)
     tie_correction = sum([count**3 - count for count in counts if count > 1])
     if tie_correction > 0:
-        Var_U -= tie_correction * n1 * n2 / (12 * (total_n - 1))
+        Var_U -= tie_correction * n1 * n2 / (12 * total_n * (total_n - 1))
     
     # 计算标准化检验统计量Z（近似Z检验）
     if Var_U > 0:

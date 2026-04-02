@@ -104,8 +104,19 @@ def calculate_f_test_variance_homogeneity(data_list: List[List[float]]) -> Dict[
     df1 = n1 - 1
     df2 = n2 - 1
     
-    # 确保较大的方差作为分子（传统F检验做法）
-    if var1 >= var2:
+    # 方差为零时的特殊处理
+    if var1 == 0 and var2 == 0:
+        # 两组方差都为零，完全齐性
+        f_statistic = 1.0
+        numerator_df = df1
+        denominator_df = df2
+        larger_var_group = "第一组"
+        smaller_var_group = "第二组"
+    elif var2 == 0 and var1 > 0:
+        raise ValueError("第二组方差为0（所有值相同），无法计算F统计量")
+    elif var1 == 0 and var2 > 0:
+        raise ValueError("第一组方差为0（所有值相同），无法计算F统计量")
+    elif var1 >= var2:
         f_statistic = var1 / var2
         numerator_df = df1
         denominator_df = df2

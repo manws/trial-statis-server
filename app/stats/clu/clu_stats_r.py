@@ -261,11 +261,15 @@ def r_clustering_from_stats_data(stats_data_list: List[List[float]],
     # 标准化数据
     standardized_data = standardize_data(data_matrix, std_type)
     
-    # 计算相似性矩阵
+    # 计算相似性矩阵（方阵形式）
     similarity_matrix = compute_similarity_matrix(standardized_data, dis_type)
     
-    # 执行层次聚类
-    linkage_matrix = hierarchical_cluster(similarity_matrix, clu_method)
+    # 将方阵转换为压缩距离向量用于 linkage
+    from scipy.spatial.distance import squareform as to_condensed
+    condensed_dist = to_condensed(similarity_matrix)
+    
+    # 执行层次聚类（传入压缩距离向量）
+    linkage_matrix = hierarchical_cluster(condensed_dist, clu_method)
     
     # 获取聚类标签
     cluster_labels = get_clusters(linkage_matrix, k)

@@ -106,17 +106,17 @@ def paired_chi_square_test(a: int, b: int, c: int, d: int) -> Dict[str, Any]:
     
     # 计算McNemar卡方统计量（不校正）
     if b + c == 0:
-        # 处理分母为0的情况
-        chi_square = float('inf')
-        p_value = 0.0
+        # b=c=0 表示完全一致，无差异
+        chi_square = 0.0
+        p_value = 1.0
     else:
         chi_square = (abs(b - c) - 0)**2 / (b + c)
         p_value = 1 - chi2.cdf(chi_square, df=1)
     
     # 计算校正的McNemar卡方统计量
     if b + c == 0:
-        corrected_chi_square = float('inf')
-        corrected_p_value = 0.0
+        corrected_chi_square = 0.0
+        corrected_p_value = 1.0
     else:
         # McNemar校正公式: (|b-c|-1)²/(b+c)
         corrected_chi_square = (abs(b - c) - 1)**2 / (b + c)

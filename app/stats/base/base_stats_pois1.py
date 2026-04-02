@@ -92,8 +92,8 @@ def poisson_single_probability(x: int, mu: float) -> float:
     if mu <= 0:
         raise ValueError("总体均数mu必须大于0")
     
-    # 使用泊松分布概率质量函数: P(X=x) = (e^(-mu) * mu^x) / x!
-    return math.exp(-mu) * (mu ** x) / math.factorial(x)
+    # 使用scipy的泊松分布PMF，避免大数溢出
+    return float(poisson.pmf(x, mu))
 
 
 def poisson_cumulative_probability_lower(x: int, mu: float) -> float:
