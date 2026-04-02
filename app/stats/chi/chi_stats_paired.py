@@ -284,7 +284,7 @@ def perform_paired_chi_square_test(a: int, b: int, c: int, d: int) -> Dict[str, 
     return results
 
 
-def cal_result_chi_paired(a: int, b: int, c: int, d: int) -> Dict[str, Any]:
+def cal_result_chi_paired(param: ChiSquareParamPaired) -> Dict[str, Any]:
     """
     生成配对资料卡方检验统计分析的完整报告字典
     

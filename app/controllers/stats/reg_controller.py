@@ -38,7 +38,7 @@ async def reg_n(param: RegParamN):
 @router.post("/log2", response_model=ResultData)
 async def reg_log2(param: RegParamLog2):
     try:
-        report = cal_report_reg_log2(param)
+        report = cal_result_reg_log2(param)
         return _wrap(report, data=param.model_dump(), message="对数2回归成功")
     except Exception as e:
         LoggerHelper.error(f"reg_log2 failed: {e}")

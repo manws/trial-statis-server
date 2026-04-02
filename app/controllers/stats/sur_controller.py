@@ -17,7 +17,7 @@ router = APIRouter(prefix="/sur", tags=["Stats-Sur"])
 @router.post("/km1", response_model=ResultData)
 async def sur_km1(param: SurParamKM1):
     try:
-        report = cal_report_sur_km1(param)
+        report = cal_result_sur_km1(param)
         return _wrap(report, data=param.model_dump(), message="生存分析KM1报告生成成功")
     except Exception as e:
         LoggerHelper.error(f"sur_km failed: {e}")
@@ -26,7 +26,7 @@ async def sur_km1(param: SurParamKM1):
 @router.post("/km2", response_model=ResultData)
 async def sur_km2(param: SurParamKM2):
     try:
-        report = cal_report_sur_km2(param)
+        report = cal_result_sur_km2(param)
         return _wrap(report, data=param.model_dump(), message="生存分析KM2报告生成成功")
     except Exception as e:
         LoggerHelper.error(f"sur_km failed: {e}")
@@ -36,7 +36,7 @@ async def sur_km2(param: SurParamKM2):
 @router.post("/lt", response_model=ResultData)
 async def sur_lt(param: SurParamLT):
     try:
-        report = cal_report_sur_lt(param)
+        report = cal_result_sur_lt(param)
         return _wrap(report, data=param.model_dump(), message="生命表生存分析报告生成成功")
     except Exception as e:
         LoggerHelper.error(f"sur_lt failed: {e}")

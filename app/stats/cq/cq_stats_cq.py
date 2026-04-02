@@ -65,6 +65,7 @@ import math
 from typing import Dict, List
 from scipy.stats import chi2
 import numpy as np
+from app.schemas.request_data.cq_param import CQParam
 
 
 def cochran_q_test(data_matrix: List[List[int]]) -> Dict:
@@ -188,7 +189,7 @@ def cochran_q_test(data_matrix: List[List[int]]) -> Dict:
     }
 
 
-def cal_result_cq(data_matrix: List[List[int]]) -> Dict:
+def cal_result_cq(param: CQParam) -> Dict:
     """
     生成Cochran's Q检验统计分析的完整报告字典
     

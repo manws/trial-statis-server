@@ -79,9 +79,8 @@ async def cor_spearman(param: CorParamSpearman):
     临床应用: 用于分析非正态分布数据或等级数据之间的单调关系
     """
     try:
-        # 提取数据列表并调用底层Spearman相关分析算法函数
-        data_list = [data.data_list for data in param.stats_data_list]
-        result = cal_result_cor_spearman(data_list)
+        # 调用底层Spearman相关分析算法函数
+        result = cal_result_cor_spearman(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="Spearman相关分析成功")
     except ValueError as e:

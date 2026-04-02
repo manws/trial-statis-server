@@ -34,6 +34,8 @@ from typing import List
 from fastapi import APIRouter, HTTPException, status, Body
 
 from app.schemas.result_data import ResultData
+from app.schemas.request_data.anova_param import AnovaParamCRD, AnovaParamRBD
+from app.schemas.request_data.stats_data import StatsData
 from app.stats.anova.anova_stats_crd import cal_result_anova_crd
 from app.stats.anova.anova_stats_rbd import cal_result_anova_rbd
 from app.utils.LoggerHelper import LoggerHelper
@@ -55,8 +57,9 @@ async def crd_anova(data_list: List[List[float]] = Body(..., embed=True)):
     临床应用: 用于比较不同治疗方案或干预措施的效果差异
     """
     try:
-        # 调用底层完全随机设计方差分析算法函数计算结果
-        result = cal_result_anova_crd(data_list)
+        # 构造参数对象并调用底层算法
+        param = AnovaParamCRD(stats_data_list=[StatsData(field_name=f"组{i+1}", data_list=d) for i, d in enumerate(data_list)])
+        result = cal_result_anova_crd(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, message="CRD方差分析报告生成成功")
     except ValueError as e:
@@ -80,8 +83,9 @@ async def rbd_anova(data_list: List[List[float]] = Body(..., embed=True)):
     临床应用: 用于比较不同治疗方案效果，同时控制可能的混杂因素（区组效应）
     """
     try:
-        # 调用底层随机区组设计方差分析算法函数计算结果
-        result = cal_result_anova_rbd(data_list)
+        # 构造参数对象并调用底层算法
+        param = AnovaParamRBD(stats_data_list=[StatsData(field_name=f"区组{i+1}", data_list=d) for i, d in enumerate(data_list)])
+        result = cal_result_anova_rbd(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, message="RBD方差分析报告生成成功")
     except ValueError as e:

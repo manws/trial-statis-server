@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.schemas.result_data import ResultData
 
 from app.schemas.request_data.cq_param import CQParam
-from app.stats.cq.cq_stats_cq import cal_report_cq
+from app.stats.cq.cq_stats_cq import cal_result_cq
 from app.utils.LoggerHelper import LoggerHelper
 from app.controllers.stats.utils import _wrap
 

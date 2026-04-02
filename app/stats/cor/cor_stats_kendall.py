@@ -71,6 +71,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.cor_param import CorParamKendall
 
 
 def kendall_correlation_from_stats_data(stats_data_list: List[List[float]]) -> Dict[str, Any]:
@@ -223,7 +224,7 @@ def _interpret_correlation_strength(abs_r: float) -> str:
         return "很弱"
 
 
-def cal_result_cor_kendall(stats_data_list: List[List[float]]) -> Dict[str, Any]:
+def cal_result_cor_kendall(param: CorParamKendall) -> Dict[str, Any]:
     """
     生成Kendall秩相关分析统计分析的完整报告字典
     

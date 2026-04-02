@@ -66,6 +66,7 @@ import math
 from typing import Dict, List, Any, Tuple
 from scipy.stats import norm
 import numpy as np
+from app.schemas.request_data.runs_param import RunsParamBC
 
 
 def count_runs(data: List[int]) -> Tuple[int, int, int]:

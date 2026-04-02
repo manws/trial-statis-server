@@ -66,6 +66,7 @@ import math
 from typing import Dict, List, Any
 from scipy.stats import t
 import numpy as np
+from app.schemas.request_data.t_param import TParamPaired
 
 
 def paired_t_test_from_stats_data(stats_data_list: List[Dict[str, Any]]) -> Dict:
@@ -236,7 +237,7 @@ def perform_paired_t_test(stats_data_list: List[Dict[str, Any]]) -> Dict:
     return results
 
 
-def cal_result_t_paired(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
+def cal_result_t_paired(param: TParamPaired) -> Dict[str, Any]:
     """
     生成配对资料t检验分析的完整报告字典
     

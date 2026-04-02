@@ -339,13 +339,17 @@ def cal_result_sur_km1(param: SurParamKM1) -> Dict[str, Any]:
 
     results = perform_kaplan_meier_survival_raw(stats_data_list)
     
+    # 构建备注信息
+    group_names = results['input_parameters'].get('group_names', [])
+    group_info = ', '.join(['{name}(n={n})'.format(name=name, n=len(sd['data_list'])) for name, sd in zip(group_names, stats_data_list)])
+
     # 构建结果字典
     result_dict = {
         "table_name": "Kaplan-Meier生存分析报告",
         "input_parameters": results["input_parameters"],
         "km_results": results["km_results"],
         "summary_statistics": results["summary_statistics"],
-        "remark": f"分析组数: {results['input_parameters']['n_groups']}, 组别: {', '.join([f'{name}(n={len(stats_data['data_list'])})' for name, stats_data in zip(results['input_parameters']['group_names'], stats_data_list)])}"
+        "remark": f"分析组数: {results['input_parameters'].get('n_groups', len(stats_data_list))}, 组别: {group_info}"
     }
     
     return result_dict

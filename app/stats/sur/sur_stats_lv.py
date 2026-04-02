@@ -461,7 +461,7 @@ def _analyze_early_late_sensitivity(a_stats: List[Dict], b_stats: List[Dict], ti
     }
 
 
-def cal_result_sur_lv(stats_data_list: List[Dict[str, Any]]) -> Dict[str, Any]:
+def cal_result_sur_lv(param: SurParamLV) -> Dict[str, Any]:
     """
     生成两组生存率比较分析的完整报告字典
     

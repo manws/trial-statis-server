@@ -63,6 +63,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import math
 from typing import Dict, Any
 from scipy.stats import t
+from app.schemas.request_data.t_param import TParamP
 
 
 def calculate_p_value_from_t(t_value: float, df: int) -> Dict:
@@ -193,7 +194,7 @@ def perform_t_p_calculation(t_value: float, df: int) -> Dict:
     return results
 
 
-def cal_result_t_p(t_value: float, df: int) -> Dict[str, Any]:
+def cal_result_t_p(param: TParamP) -> Dict[str, Any]:
     """
     生成t检验P值计算的完整报告字典
     

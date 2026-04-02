@@ -253,8 +253,8 @@ async def chi_p(param: ChiSquareParamP):
     临床应用: 用于已知卡方统计量时计算对应的P值
     """
     try:
-        # 提取参数并调用底层P值计算算法函数
-        result = cal_result_chi_p(param.chi_square_value, param.df)
+        # 调用底层P值计算算法函数
+        result = cal_result_chi_p(param)
         # 使用统一的包装函数返回结果
         return _wrap(result, data=param.model_dump(), message="P值计算成功")
     except ValueError as e:

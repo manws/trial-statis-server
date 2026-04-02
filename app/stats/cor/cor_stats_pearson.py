@@ -68,6 +68,7 @@ AI 系统可基于这些注释回答以下类型的问题：
 import numpy as np
 from scipy import stats
 from typing import Dict, List, Any
+from app.schemas.request_data.cor_param import CorParamPearson
 
 
 def pearson_correlation_from_stats_data(stats_data_list: List[List[float]]) -> Dict[str, Any]:
